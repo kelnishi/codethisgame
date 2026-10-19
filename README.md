@@ -56,13 +56,20 @@ their code too.
 
 | File | Symptom | Fix |
 |---|---|---|
-| `chapter9`, `mod1`–`mod3` | A trap only worked on a vampire's left edge, and a trap in the rightmost column did nothing. | `right_tile_wall` → `right_tile`; `right_tile.x` → `right_tile.rect.x` (and the same for `left_tile`); both `< 10` bounds → `< 11`. |
+| `chapter9`, `hack1`–`hack3`, `mod1`–`mod3` | A trap only worked on a vampire's left edge, and a trap in the rightmost column did nothing. | `right_tile_wall` → `right_tile`; `right_tile.x` → `right_tile.rect.x` (and the same for `left_tile`); both `< 10` bounds → `< 11`. |
+| `hack4`, `hack5` | A trap in the rightmost column did nothing. | Both `< 10` bounds → `< 11`. |
+| `hack1` | Crashed at startup. | Added the missing `explosion.png`. |
+| `hack4`, `hack5` | Both levels ended in "Game Over" on their first frame. | `MAX_BAD_REVIEWS = 0` → `3`. |
+| `hack4`, `hack5` | Losing level 1 flashed "Game Over", then started level 2 anyway. | `break` after the Game Over screen. |
+| `hack4`, `hack5` | Finishing the last level offered another level instead of a win; after level 1 the prompt said "Level 1". | `level_cursor < len(level_config) - 1`, and `str(level_cursor + 2)`. |
+| `hack4`, `hack5` | Crashed on reaching the win screen. | `end_font.render('You Won!!!', True, WHITE)`, which supplies the missing antialias and color arguments. |
 | `mod2` | Crashed on Linux at startup. | `'WERE_PIZZA.png'` → `'were_pizza.png'`, the file's real name. |
-| `mod2` | The were-pizza always looked like a vampire pizza. | `WerePizza` gets its own `update`, so it keeps the `WERE_PIZZA` image. |
-| `mod2` | The zombie only showed its damage pictures near death. | `/ STARTING_HEALTH * 2` → `/ (STARTING_HEALTH * 2)`. |
+| `hack4`, `hack5`, `mod2` | The were-pizza always looked like a vampire pizza. | `WerePizza` gets its own `update`, so it keeps the `WERE_PIZZA` image. |
+| `hack4`, `hack5`, `mod2` | The zombie only showed its damage pictures near death. | `/ STARTING_HEALTH * 2` → `/ (STARTING_HEALTH * 2)`. |
 
 ### Added assets
 
 | File | Used by | Made from |
 |---|---|---|
+| `explosion.png` | `hack1` | A new 100×100 cartoon starburst drawn as SVG, in the style of the book's art. |
 | `pizza-music.ogg` | `mod3` | `pizza-music.wav`, encoded as Ogg Vorbis. |

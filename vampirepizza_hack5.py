@@ -36,7 +36,7 @@ LVL1_STARTING_BUCKS = 15
 LVL2_STARTING_BUCKS = 25
 BUCK_RATE = 10
 BUCK_BOOSTER = 1
-MAX_BAD_REVIEWS = 0
+MAX_BAD_REVIEWS = 3
 WIN_TIME = FRAMERATE * 60 * 1
 STARTING_HEALTH = 150
 
@@ -142,6 +142,23 @@ class WerePizza(VampireSprite):
         self.speed = FAST_SPEED
         self.image = WERE_PIZZA.copy()
 
+    def update(self, GAME_WINDOW, counters):
+        GAME_WINDOW.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
+        self.rect.x -= self.speed
+
+        if self.health <= 0 or self.rect.x <= 100:
+            if self.rect.x <= 100:
+                counters.bad_reviews += 1
+            self.kill()
+        else: 
+            if self.health * 100 / STARTING_HEALTH > 60:
+                self.image = WERE_PIZZA.copy()
+            elif self.health * 100 / STARTING_HEALTH > 30:
+                self.image = MED_HEALTH.copy()
+            else: 
+                self.image = LOW_HEALTH.copy()
+            GAME_WINDOW.blit(self.image, (self.rect.x, self.rect.y))
+
     def attack(self, tile):
         if tile.trap == SLOW:
             self.speed = REG_SPEED
@@ -168,7 +185,7 @@ class ZombiePizza(VampireSprite):
         
 
         else:
-            percent_health = self.health * 100 / STARTING_HEALTH * 2
+            percent_health = self.health * 100 / (STARTING_HEALTH * 2)
             if  percent_health > 80:
                 self.image = ZOMBIE_PIZZA.copy()
             elif percent_health > 65:
@@ -431,11 +448,11 @@ def run_level(enemy_list, start_bucks, clear_tiles):
             tile_row = tile_grid[vampire.rect.y // 100]
             vampire_left_side_x = vampire.rect.x // 100
             vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-            if -1 < vampire_left_side_x < 10:
+            if -1 < vampire_left_side_x < 11:
                 left_tile = tile_row[vampire_left_side_x]
             else:
                 left_tile = None
-            if -1 < vampire_right_side_x < 10:
+            if -1 < vampire_right_side_x < 11:
                 right_tile = tile_row[vampire_right_side_x]
             else:
                 right_tile = None
@@ -492,8 +509,9 @@ while exited and level_cursor < len(level_config):
             end_surf = end_font.render('Game Over', True, WHITE)
             GAME_WINDOW.blit(end_surf, (350, 200))
             display.update()
-        elif level_cursor < len(level_config):
-            cont_surf = end_font.render('Press Enter/Return for Level ' + str(level_cursor + 1), True, WHITE)
+            break
+        elif level_cursor < len(level_config) - 1:
+            cont_surf = end_font.render('Press Enter/Return for Level ' + str(level_cursor + 2), True, WHITE)
             GAME_WINDOW.blit(cont_surf, (150, 400))
             display.update()
             waiting_at_prompt = True
@@ -506,7 +524,7 @@ while exited and level_cursor < len(level_config):
                         if event.key == pygame.K_RETURN:
                             waiting_at_prompt = False
         else:
-            end_surf = end_font.render('You Won!!!')
+            end_surf = end_font.render('You Won!!!', True, WHITE)
             GAME_WINDOW.blit(end_surf, (350, 200))
             display.update()
         level_cursor += 1

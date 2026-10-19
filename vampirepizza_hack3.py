@@ -354,17 +354,17 @@ while running:
         tile_row = tile_grid[vampire.rect.y // 100]
         vampire_left_side_x = vampire.rect.x // 100
         vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-        if -1 < vampire_left_side_x < 10:
+        if -1 < vampire_left_side_x < 11:
             left_tile = tile_row[vampire_left_side_x]
         else:
             left_tile = None
-        if -1 < vampire_right_side_x < 10:
-            right_tile_wall = tile_row[vampire_right_side_x]
+        if -1 < vampire_right_side_x < 11:
+            right_tile = tile_row[vampire_right_side_x]
         else:
             right_tile = None
         if bool(left_tile):
             vampire.attacked_by(left_tile)
-        if bool(right_tile) and right_tile.x != left_tile.x:
+        if bool(right_tile) and right_tile.rect.x != left_tile.rect.x:
             vampire.attacked_by(right_tile)
 
 #-------------------------------------------------
