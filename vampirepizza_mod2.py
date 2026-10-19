@@ -61,7 +61,7 @@ BACKGROUND = transform.scale(background_surf, (WINDOW_RES))
 pizza_img = image.load('vampire.png')
 pizza_surf = Surface.convert(pizza_img)
 VAMPIRE_PIZZA = transform.scale(pizza_surf, (WIDTH, HEIGHT))
-were_img = image.load('WERE_PIZZA.png')
+were_img = image.load('were_pizza.png')
 were_surf = Surface.convert(were_img)
 WERE_PIZZA = transform.scale(were_surf, (WIDTH, HEIGHT))
 zombie_img = image.load('zombie_pizza.png')
@@ -141,6 +141,23 @@ class WerePizza(VampireSprite):
         self.speed = FAST_SPEED
         self.image = WERE_PIZZA.copy()
 
+    def update(self, GAME_WINDOW, counters):
+        GAME_WINDOW.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
+        self.rect.x -= self.speed
+
+        if self.health <= 0 or self.rect.x <= 100:
+            if self.rect.x <= 100:
+                counters.reviews += 1
+            self.kill()
+        else:
+            if self.health * 100 / STARTING_HEALTH > 60:
+                self.image = WERE_PIZZA.copy()
+            elif self.health * 100 / STARTING_HEALTH > 30:
+                self.image = MED_HEALTH.copy()
+            else:
+                self.image = LOW_HEALTH.copy()
+            GAME_WINDOW.blit(self.image, (self.rect.x, self.rect.y))
+
     def attack(self, tile):
         if tile.trap == SLOW:
             self.speed = REG_SPEED
@@ -167,7 +184,7 @@ class ZombiePizza(VampireSprite):
         
 
         else:
-            percent_health = self.health * 100 / STARTING_HEALTH * 2
+            percent_health = self.health * 100 / (STARTING_HEALTH * 2)
             if  percent_health > 80:
                 self.image = ZOMBIE_PIZZA.copy()
             elif percent_health > 65:
@@ -405,17 +422,17 @@ while running:
         tile_row = tile_grid[vampire.rect.y // 100]
         vampire_left_side_x = vampire.rect.x // 100
         vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-        if -1 < vampire_left_side_x < 10:
+        if -1 < vampire_left_side_x < 11:
             left_tile = tile_row[vampire_left_side_x]
         else:
             left_tile = None
-        if -1 < vampire_right_side_x < 10:
-            right_tile_wall = tile_row[vampire_right_side_x]
+        if -1 < vampire_right_side_x < 11:
+            right_tile = tile_row[vampire_right_side_x]
         else:
             right_tile = None
         if bool(left_tile):
             vampire.attack(left_tile)
-        if bool(right_tile) and right_tile.x != left_tile.x:
+        if bool(right_tile) and right_tile.rect.x != left_tile.rect.x:
             vampire.attack(right_tile)
 
 #-------------------------------------------------
