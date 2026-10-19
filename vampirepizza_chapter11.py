@@ -179,7 +179,7 @@ for row in range(6):
     row_of_tiles = []
     tile_grid.append(row_of_tiles)
     for column in range(11):
-        new_tile = BackgroundTile(column, row)
+        new_tile = BackgroundTile()
         new_tile.rect = pygame.Rect(WIDTH * column, HEIGHT * row, WIDTH, HEIGHT)
         row_of_tiles.append(new_tile) 
         draw.rect(BACKGROUND, tile_color, (WIDTH * column, HEIGHT * row, WIDTH, HEIGHT), 1)
@@ -209,7 +209,7 @@ while running:
         #Set up the background tiles to respond to a mouse click
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            trap_applicator.select_tile(tile_grid[y // 100][x // 100], counters)
+            tile_grid[y // 100][x //100].effect = True
 
 
 #-------------------------------------------------
@@ -224,25 +224,24 @@ while running:
     #draw the background grid
     for tile_row in tile_grid:
         for tile in tile_row:
-            if bool(tile.trap):
-                GAME_WINDOW.blit(BACKGROUND, (tile.rect.x, tile.rect.y), tile.rect)
+            GAME_WINDOW.blit(BACKGROUND, (tile.rect.x, tile.rect.y), tile.rect)
 
     #set up collision detection
     for vampire in all_vampires:
         tile_row = tile_grid[vampire.rect.y // 100]
         vampire_left_side_x = vampire.rect.x // 100
         vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-        if -1 < vampire_left_side_x < 10:
+        if -1 < vampire_left_side_x < 11:
             left_tile = tile_row[vampire_left_side_x]
         else:
             left_tile = None
-        if -1 < vampire_right_side_x < 10:
-            right_tile_wall = tile_row[vampire_right_side_x]
+        if -1 < vampire_right_side_x < 11:
+            right_tile = tile_row[vampire_right_side_x]
         else:
             right_tile = None
         if bool(left_tile) and left_tile.effect:
             vampire.speed = SLOW_SPEED
-        if bool(right_tile) and right_tile.x != left_tile.x and right_tile.effect:
+        if bool(right_tile) and right_tile.rect.x != left_tile.rect.x and right_tile.effect:
             vampire.speed = SLOW_SPEED
         if vampire.rect.x <= 0:
             vampire.kill()

@@ -56,8 +56,9 @@ their code too.
 
 | File | Symptom | Fix |
 |---|---|---|
-| `chapter9`, `hack1`–`hack3`, `mod1`–`mod3` | A trap only worked on a vampire's left edge, and a trap in the rightmost column did nothing. | `right_tile_wall` → `right_tile`; `right_tile.x` → `right_tile.rect.x` (and the same for `left_tile`); both `< 10` bounds → `< 11`. |
+| `chapter9`–`chapter12`, `VampirePizzaAttack`, `hack1`–`hack3`, `mod1`–`mod3` | A trap only worked on a vampire's left edge, and a trap in the rightmost column did nothing. | `right_tile_wall` → `right_tile`; `right_tile.x` → `right_tile.rect.x` (and the same for `left_tile`); both `< 10` bounds → `< 11`. |
 | `hack4`, `hack5` | A trap in the rightmost column did nothing. | Both `< 10` bounds → `< 11`. |
+| `chapter11` | Crashed at startup, and on any click once that was fixed. | Three lines that need chapter 12's tile classes go back to chapter 10's form: `BackgroundTile()`, `.effect = True` on click, and an unconditional tile redraw. |
 | `hack1` | Crashed at startup. | Added the missing `explosion.png`. |
 | `hack4`, `hack5` | Both levels ended in "Game Over" on their first frame. | `MAX_BAD_REVIEWS = 0` → `3`. |
 | `hack4`, `hack5` | Losing level 1 flashed "Game Over", then started level 2 anyway. | `break` after the Game Over screen. |
