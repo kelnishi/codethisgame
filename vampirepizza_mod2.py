@@ -141,23 +141,6 @@ class WerePizza(VampireSprite):
         self.speed = FAST_SPEED
         self.image = WERE_PIZZA.copy()
 
-    def update(self, GAME_WINDOW, counters):
-        GAME_WINDOW.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
-        self.rect.x -= self.speed
-
-        if self.health <= 0 or self.rect.x <= 100:
-            if self.rect.x <= 100:
-                counters.reviews += 1
-            self.kill()
-        else:
-            if self.health * 100 / STARTING_HEALTH > 60:
-                self.image = WERE_PIZZA.copy()
-            elif self.health * 100 / STARTING_HEALTH > 30:
-                self.image = MED_HEALTH.copy()
-            else:
-                self.image = LOW_HEALTH.copy()
-            GAME_WINDOW.blit(self.image, (self.rect.x, self.rect.y))
-
     def attack(self, tile):
         if tile.trap == SLOW:
             self.speed = REG_SPEED

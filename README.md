@@ -7,10 +7,10 @@ a tower-defense game in Python and pygame. Each file here is the game as it stan
 the end of a chapter, hack, or mod, so a reader can check their own code against it.
 
 It is a fork of [meg-ray/codethisgame](https://github.com/meg-ray/codethisgame). The
-original code had bugs that stopped some lessons from working, and two files it loads
-were missing. This fork fixes both and runs on **Python 3.14**. The fixes keep the
-book's names, comments, and `from pygame import *` style, so the code still lines up
-with the printed pages.
+original code had typos and crashes that stopped some lessons from working, and two
+files it loads were missing. This fork fixes those and runs on **Python 3.14**. The
+fixes keep the book's names, comments, and `from pygame import *` style, so the code
+stays close to the printed pages.
 
 ## Setup
 
@@ -50,9 +50,13 @@ python vampirepizza_chapter9.py
 
 ## Corrections
 
-These are the changes from the original repo. A reader whose own code shows one of
-these symptoms has probably copied the original faithfully, so the fix applies to
-their code too.
+The original repo was last updated in September 2018, almost a year before the book
+came out in August 2019. Its files are the author's drafts, so the printed code may
+differ from them. Corrections here are limited to typos and crashes. The book's
+challenges are the reader's to solve, so where a Part 3 sample stops short of working,
+the next section names the symptom and leaves the fix alone.
+
+### Fixed
 
 | File | Symptom | Fix |
 |---|---|---|
@@ -60,17 +64,30 @@ their code too.
 | `hack4`, `hack5` | A trap in the rightmost column did nothing. | Both `< 10` bounds → `< 11`. |
 | `chapter11` | Crashed at startup, and on any click once that was fixed. | Three lines that need chapter 12's tile classes go back to chapter 10's form: `BackgroundTile()`, `.effect = True` on click, and an unconditional tile redraw. |
 | `hack1` | Crashed at startup. | Added the missing `explosion.png`. |
-| `hack4`, `hack5` | Both levels ended in "Game Over" on their first frame. | `MAX_BAD_REVIEWS = 0` → `3`. |
-| `hack4`, `hack5` | Losing level 1 flashed "Game Over", then started level 2 anyway. | `break` after the Game Over screen. |
-| `hack4`, `hack5` | Finishing the last level offered another level instead of a win; after level 1 the prompt said "Level 1". | `level_cursor < len(level_config) - 1`, and `str(level_cursor + 2)`. |
-| `hack4`, `hack5` | Crashed on reaching the win screen. | `end_font.render('You Won!!!', True, WHITE)`, which supplies the missing antialias and color arguments. |
+| `mod3` | Crashed at startup. | Added the missing `pizza-music.ogg`. |
 | `mod2` | Crashed on Linux at startup. | `'WERE_PIZZA.png'` → `'were_pizza.png'`, the file's real name. |
-| `hack4`, `hack5`, `mod2` | The were-pizza always looked like a vampire pizza. | `WerePizza` gets its own `update`, so it keeps the `WERE_PIZZA` image. |
+| `hack4`, `hack5` | Would crash on reaching the win screen. | `end_font.render('You Won!!!', True, WHITE)`, which supplies the missing antialias and color arguments. |
 | `hack4`, `hack5`, `mod2` | The zombie only showed its damage pictures near death. | `/ STARTING_HEALTH * 2` → `/ (STARTING_HEALTH * 2)`. |
+
+### Left for the reader
+
+These samples run, but they don't yet do what their mod sets out to do. Each one is a
+good debugging exercise.
+
+| File | What you'll see |
+|---|---|
+| `hack4`, `hack5` | Every level ends in "Game Over" on its first frame. Look at how many bad reviews the game allows. |
+| `hack4`, `hack5` | Losing level 1 shows "Game Over", then level 2 starts anyway. |
+| `hack4`, `hack5` | After level 1, the prompt says "Press Enter/Return for Level 1". After the last level, there's no win screen. |
+| `hack4`, `hack5`, `mod2` | The were-pizza looks just like a vampire pizza. Compare `WerePizza` with `ZombiePizza`, which does keep its own picture. |
 
 ### Added assets
 
+The book's art and sound come from a publisher download at
+`mackidsbooks.com/assets/gameassets.zip`, which no longer responds. These files fill the
+gaps so the samples start. They're stand-ins, and you can swap in your own.
+
 | File | Used by | Made from |
 |---|---|---|
-| `explosion.png` | `hack1` | A new 100×100 cartoon starburst drawn as SVG, in the style of the book's art. |
+| `explosion.png` | `hack1` | A new 100×100 cartoon starburst drawn as SVG. |
 | `pizza-music.ogg` | `mod3` | `pizza-music.wav`, encoded as Ogg Vorbis. |

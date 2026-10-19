@@ -9,6 +9,10 @@ upstream.
   someone else.
 - **Fidelity:** readers compare these files against the printed book. Fix only what is
   broken, and keep the book's names, comments, and `from pygame import *` style.
+- **Reader's work:** fix typos and crashes only. When a Part 3 hack or mod sample
+  stops short of working, list the symptom under the README's "Left for the reader"
+  and leave the code alone. Those gaps are the reader's to solve, and Kelvin's kids
+  are the readers.
 - **Corrections log:** `README.md` lists every change from the original. Add a row to
   its Corrections table with each fix.
 

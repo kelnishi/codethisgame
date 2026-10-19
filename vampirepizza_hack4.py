@@ -36,7 +36,7 @@ LVL1_STARTING_BUCKS = 15
 LVL2_STARTING_BUCKS = 25
 BUCK_RATE = 10
 BUCK_BOOSTER = 1
-MAX_BAD_REVIEWS = 3
+MAX_BAD_REVIEWS = 0
 WIN_TIME = FRAMERATE * 60 * 1
 STARTING_HEALTH = 150
 
@@ -141,23 +141,6 @@ class WerePizza(VampireSprite):
         super(WerePizza, self).__init__()
         self.speed = FAST_SPEED
         self.image = WERE_PIZZA.copy()
-
-    def update(self, GAME_WINDOW, counters):
-        GAME_WINDOW.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
-        self.rect.x -= self.speed
-
-        if self.health <= 0 or self.rect.x <= 100:
-            if self.rect.x <= 100:
-                counters.bad_reviews += 1
-            self.kill()
-        else: 
-            if self.health * 100 / STARTING_HEALTH > 60:
-                self.image = WERE_PIZZA.copy()
-            elif self.health * 100 / STARTING_HEALTH > 30:
-                self.image = MED_HEALTH.copy()
-            else: 
-                self.image = LOW_HEALTH.copy()
-            GAME_WINDOW.blit(self.image, (self.rect.x, self.rect.y))
 
     def attack(self, tile):
         if tile.trap == SLOW:
@@ -504,9 +487,8 @@ while exited and level_cursor < len(level_config):
             end_surf = end_font.render('Game Over', True, WHITE)
             GAME_WINDOW.blit(end_surf, (350, 200))
             display.update()
-            break
-        elif level_cursor < len(level_config) - 1:
-            cont_surf = end_font.render('Press Enter/Return for Level ' + str(level_cursor + 2), True, WHITE)
+        elif level_cursor < len(level_config):
+            cont_surf = end_font.render('Press Enter/Return for Level ' + str(level_cursor + 1), True, WHITE)
             GAME_WINDOW.blit(cont_surf, (150, 400))
             display.update()
             waiting_at_prompt = True
